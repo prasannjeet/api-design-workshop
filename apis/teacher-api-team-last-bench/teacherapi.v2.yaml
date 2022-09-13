@@ -7,153 +7,141 @@ info:
 servers:
   - url: 'http://localhost:3000'
 paths:
-  '/users/{userId}':
+  '/teachers/{teacherId}':
     parameters:
       - schema:
-          type: integer
-        name: userId
+          type: string
+        name: teacherId
         in: path
         required: true
-        description: Id of an existing user.
     get:
-      summary: Get User Info by User ID
+      summary: Your GET endpoint
       tags: []
       responses:
         '200':
-          description: User Found
+          description: Teacher Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: ./models/teacher.v1.yaml
               examples:
-                Get User Alice Smith:
+                example-1:
                   value:
-                    id: 142
-                    firstName: Alice
-                    lastName: Smith
-                    email: alice.smith@gmail.com
-                    dateOfBirth: '1997-10-31'
-                    emailVerified: true
-                    signUpDate: '2019-08-24'
+                    id: 123e4567-e89b-12d3-a456-426614174000
+                    school:
+                      id: string
+                    firstName: string
+                    lastName: string
+                    dob: '2019-08-24'
+                    email: test@abc.com
+                    phone: 999 999 999
         '404':
-          description: User Not Found
-      operationId: get-users-userId
-      description: Retrieve the information of the user with the matching user ID.
+          description: Teacher Not Found
+        '500':
+          description: Internal Server Error
+      operationId: get-teachers-teacherId
+      description: Retrieve the information of the teacher using Teacher Id
     patch:
-      summary: Update User Information
-      operationId: patch-users-userId
+      summary: ''
+      operationId: patch-teachers-teacherId
       responses:
         '200':
-          description: User Updated
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-              examples:
-                Updated User Rebecca Baker:
-                  value:
-                    id: 13
-                    firstName: Rebecca
-                    lastName: Baker
-                    email: rebecca@gmail.com
-                    dateOfBirth: '1985-10-02'
-                    emailVerified: false
-                    createDate: '2019-08-24'
+                $ref: ./models/teacher.v1.yaml
         '404':
-          description: User Not Found
+          description: Teacher Not Found
         '409':
-          description: Email Already Taken
-      description: Update the information of an existing user.
+          description: Email already exist against other teacher
+        '500':
+          description: Internal Server Error
+      description: Update the information of the existing teacher using Teacher Id
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                firstName:
-                  type: string
-                lastName:
-                  type: string
-                email:
-                  type: string
-                  description: 'If a new email is given, the user''s email verified property will be set to false.'
-                dateOfBirth:
-                  type: string
+              $ref: ./models/teacher.v1.yaml
             examples:
               Update First Name:
                 value:
-                  firstName: Rebecca
-              Update Email:
-                value:
-                  email: rebecca@gmail.com
-              Update Last Name & Date of Birth:
-                value:
-                  lastName: Baker
-                  dateOfBirth: '1985-10-02'
-        description: Patch user properties to update.
-  /user:
+                  firstName: string
+  /teacher:
     post:
-      summary: Create New User
-      operationId: post-user
+      summary: ''
+      operationId: post-teachers
       responses:
         '200':
-          description: User Created
+          description: Teacher Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-              examples:
-                New User Bob Fellow:
-                  value:
-                    id: 12
-                    firstName: Bob
-                    lastName: Fellow
-                    email: bob.fellow@gmail.com
-                    dateOfBirth: '1996-08-24'
-                    emailVerified: false
-                    createDate: '2020-11-18'
+                type: object
+                properties:
+                  '':
+                    $ref: ./models/teacher.v1.yaml
         '400':
-          description: Missing Required Information
+          description: Missing required information
         '409':
-          description: Email Already Taken
+          description: Email already taker
+        '500':
+          description: Internal Server Error
+      description: Create New Teacher
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                firstName:
-                  type: string
-                lastName:
-                  type: string
-                email:
-                  type: string
-                dateOfBirth:
-                  type: string
-                  format: date
-              required:
-                - firstName
-                - lastName
-                - email
-                - dateOfBirth
+              $ref: ./models/teacher.v1.yaml
             examples:
-              Create User Bob Fellow:
+              example-1:
                 value:
-                  firstName: Bob
-                  lastName: Fellow
-                  email: bob.fellow@gmail.com
-                  dateOfBirth: '1996-08-24'
-        description: Post the necessary fields for the API to create a new user.
-      description: Create a new user.
+                  teacher:
+                    id: 123e4567-e89b-12d3-a456-426614174000
+                    school:
+                      id: string
+                    firstName: First Name
+                    lastName: Last Name
+                    dob: '2019-08-24'
+                    email: test@abc.com
+                    phone: 999 999 999
+    parameters: []
+  /teachers:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: List of Teachers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ./models/teacher.v1.yaml
+              examples:
+                example-1:
+                  value:
+                    - id: 123e4567-e89b-12d3-a456-426614174000
+                      school:
+                        id: string
+                      firstName: First Name
+                      lastName: Last Name
+                      dob: '2019-08-24'
+                      email: test@abc.com
+                      phone: 999 999 999
+        '500':
+          description: Internal Server Error
+      operationId: get-teachers
+      description: Get List of Teachers
 components:
   schemas:
     User:
       title: User
       type: object
       description: ''
-      x-examples:
-        Alice Smith:
-          id: 142
+      examples:
+        - id: 142
           firstName: Alice
           lastName: Smith
           email: alice.smith@gmail.com
