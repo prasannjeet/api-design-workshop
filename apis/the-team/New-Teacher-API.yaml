@@ -35,39 +35,6 @@ paths:
                           note: Do not spam
                       fullName: Rolf Rolfsson
       operationId: get-teachers
-    post:
-      summary: ''
-      operationId: post-teachers
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Teacher'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Teacher'
-            examples:
-              example-1:
-                value:
-                  id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                  contactInfo:
-                    - contact_information: rolf@rolf.se
-                      contact_type: personalEmail
-                      note: Do not spam
-                  fullName: Rolf Rolfsson
   '/teacher/{teacherId}/contactInfo/{contactInfoId}':
     get:
       summary: Your GET endpoint
